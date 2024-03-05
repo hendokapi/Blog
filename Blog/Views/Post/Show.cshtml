@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+}
+
+@if (Model.PostId == 0)
+{
+    <h2>Post not found</h2>
+}
+else
+{
+    <h2>@Model.Title</h2>
+    <h3>In category: @Model.Category.Name</h3>
+    <h3>Written by: @Model.Author.Username</h3>
+
+    <p>@Model.Contents</p>
+}

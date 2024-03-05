@@ -1,7 +1,22 @@
-﻿
+﻿@model List<Blog.Models.Post>
+@using Blog.Models
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
+@if (Model.Count == 0)
+{
+    <h3>Non ci sono posts al momento</h3>
+}
+else
+{
+    <ul>
+        @foreach (var post in Model)
+        {
+            <li>@post.Title, @post.CategoryId, @post.AuthorId</li>
+        }
+    </ul>
+}

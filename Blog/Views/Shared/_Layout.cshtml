@@ -18,8 +18,23 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Prova", "Prova", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+
+                    <li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("Logout", "Login"))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-primary">Logout</button>
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-primary" })
+                        }
+                    </li>
+
                 </ul>
             </div>
         </div>

@@ -24,7 +24,11 @@ namespace Blog.Models
         [Display(Name = "Categoria")]
         public int CategoryId { get; set; }
 
+        public Category Category { get; set;}
+
         [Display(Name = "Autore")]
         public int AuthorId { get; set; }
+
+        public Author Author { get; set; }
     }
 }
