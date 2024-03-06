@@ -15,6 +15,10 @@ namespace Blog.Models
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Min 3, max 20 caratteri")]
         public string Username { get; set; }
 
+        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string Email { get; set; }
+
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Campo obbligatorio")]
         [StringLength(15, MinimumLength = 8, ErrorMessage = "Min 8, max 15 caratteri")]

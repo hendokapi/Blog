@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Blog.Models
 {
@@ -17,12 +18,14 @@ namespace Blog.Models
         [StringLength(100, MinimumLength = 10, ErrorMessage = "Il titolo deve avere min 10 e max 100 caratteri")]
         public string Title { get; set; }
 
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Campo obbligatorio")]
         [Display(Name = "Contenuto")]
         public string Contents { get; set; }
 
         [Display(Name = "Categoria")]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         public Category Category { get; set;}
 

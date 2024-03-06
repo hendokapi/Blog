@@ -104,16 +104,17 @@ namespace Blog.Controllers
                 var command = new SqlCommand(@"
                     INSERT INTO Posts
                     (Title, Contents, CategoryId, AuthorId)
-                    VALUES (@title, @contents, @categoryId, @authorId)", conn);
+                    OUTPUT INSERTED.PostId
+                    VALUES (@title, @contents, @categoryId, @authorId)
+                ", conn);
                 command.Parameters.AddWithValue("@title", post.Title);
                 command.Parameters.AddWithValue("@contents", post.Contents);
                 command.Parameters.AddWithValue("@categoryId", 1); // TODO: update this
                 command.Parameters.AddWithValue("@authorId", HttpContext.User.Identity.Name);
-                var numRows = command.ExecuteNonQuery();
+                var postId = command.ExecuteScalar();
 
                 return RedirectToAction("Index"); // TODO: ridirezionare alla show
             }
-            ViewBag.isValid = false;
             return View(post);
         }
 
@@ -164,7 +165,7 @@ namespace Blog.Controllers
             reader.Close();
 
             var commandListCategories = new SqlCommand("SELECT * FROM Categories", conn);
-            var readerCategories = command.ExecuteReader();
+            var readerCategories = commandListCategories.ExecuteReader();
 
             var categories = new List<Category>();
             if (readerCategories.HasRows)
@@ -180,9 +181,9 @@ namespace Blog.Controllers
                     categories.Add(category);
                 }
             }
-            ViewBag.Categories = categories;
             conn.Close();
 
+            ViewBag.Categories = categories;
             return View(post);
         }
 
@@ -191,7 +192,7 @@ namespace Blog.Controllers
         {
             // TODO: bisogna fare i controlli sull'Author
             // if (HttpContext.User.Identity.Name.ToString() != reader["AuthorId"].ToString()) return RedirectToAction("Index");
-            return View();
+            return View(post);
         }
     }
 }

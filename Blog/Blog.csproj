@@ -188,6 +188,7 @@
     <Content Include="Views\Login\Prova.cshtml" />
     <Content Include="Views\Post\Show.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
+    <Content Include="Views\Login\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

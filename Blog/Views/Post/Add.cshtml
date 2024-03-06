@@ -10,17 +10,17 @@
 {
     @Html.AntiForgeryToken()
 
-    if (ViewBag.isValid != null) {
-        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
-    }
+    <div class="mb-3">
+        @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Title") ? "" : "is-invalid")}" } })
+        @Html.ValidationMessageFor(model => model.Title, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+    </div>
 
-    @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
-    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.Title)
+    <div class="mb-3">
+        @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Contents") ? "" : "is-invalid")}", rows = "5" } })
+        @Html.ValidationMessageFor(model => model.Contents, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+    </div>
 
-    @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
-    @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.Contents)
-
-    <button class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Crea</button>
 }

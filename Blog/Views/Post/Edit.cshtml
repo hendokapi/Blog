@@ -6,24 +6,60 @@
 
 <h2>Add a new post</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Post", FormMethod.Post, new { novalidate = "true", id = "EditForm" }))
 {
     @Html.AntiForgeryToken()
 
-    if (ViewBag.isValid != null)
-    {
-        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
-    }
+    <div class="mb-3">
+        @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Title") ? "" : "is-invalid")}" } })
+        @Html.ValidationMessageFor(model => model.Title, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+    </div>
 
-    @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
-    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.Title)
+    <div class="mb-3">
+        @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Contents") ? "" : "is-invalid")}", rows = "5" } })
+        @Html.ValidationMessageFor(model => model.Contents, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+    </div>
 
-    @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
-    @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.Contents)
+    @Html.HiddenFor(model => model.Contents)
 
     //TODO: fare la select con tutte le categorie
+    <div class="mb-3">
+        @Html.LabelFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "Name"), "Select category", new { @class = "form-select" })
+    </div>
 
-    <button class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Modifica</button>
 }
+
+
+@*@Html.Raw(str)*@
+
+@*<div class="my-3">
+    <div id="editor">
+        <h2>Demo Content</h2>
+        <p>Preset build with <code>snow</code> theme, and some common formats.</p>
+    </div>
+</div>
+
+@section styles {
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css" rel="stylesheet">
+}
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        const html = quill.getSemanticHTML();
+        console.log(html);
+
+        document.querySelector('#EditForm').addEventListener('submit', function () {
+            console.log('qui');
+            document.querySelector('#Contents').value = quill.getSemanticHTML();
+        });
+    </script>
+}*@
