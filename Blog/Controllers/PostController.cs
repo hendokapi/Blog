@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace Blog.Controllers
 {
@@ -236,6 +237,25 @@ namespace Blog.Controllers
             
             // TODO: centralizzare il metodo che recupera le categorie
             return View(post);
+        }
+
+        //[HttpPost]
+        [AllowAnonymous]
+        public JsonResult CheckTitle(string title)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DbBlogConnection"].ToString();
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var command = new SqlCommand(@"
+                    SELECT * FROM Posts
+                    WHERE Posts.Title = @title
+                ", conn);
+            command.Parameters.AddWithValue("@title", title);
+            var reader = command.ExecuteReader();
+
+            if (reader.HasRows) return Json(new { used = true }, JsonRequestBehavior.AllowGet);
+
+            return Json(new { used = false }, JsonRequestBehavior.AllowGet);
         }
     }
 }

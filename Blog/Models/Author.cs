@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Blog.Validations;
 
 namespace Blog.Models
 {
@@ -17,7 +18,7 @@ namespace Blog.Models
 
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Campo obbligatorio")]
-        // [Unique] //TODO: creare la validazione custom
+        //[Unique(AcceptedDomain = "gmail.com", ErrorMessage = "Email già utilizzata oppure non è gmail")] //TODO: creare la validazione custom
         public string Email { get; set; }
 
         [DataType(DataType.Password)]

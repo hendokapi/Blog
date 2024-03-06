@@ -14,6 +14,8 @@
         @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
         @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Title") ? "" : "is-invalid")}" } })
         @Html.ValidationMessageFor(model => model.Title, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+        <div class="usedMessage"></div>
+        <div class="btn btn-primary" id="chekka">Chekka</div>
     </div>
 
     @*<div class="mb-3">
@@ -52,5 +54,22 @@
         document.querySelector('#PostForm').addEventListener('submit', function () {
             document.querySelector('#Contents').value = quill.getSemanticHTML();
         });
+    </script>
+
+    <script>
+        const usedMessageEle = document.querySelector(".usedMessage");
+        const input = document.querySelector("#Title");
+        const btn = document.querySelector('#chekka');
+        btn.addEventListener("click", function () {
+            fetch(`/post/checktitle?title=${input.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.used) {
+                        usedMessageEle.textContent = "Titolo usato";
+                    } else {
+                        usedMessageEle.textContent = "Titolo originale";
+                    }
+                })
+        })
     </script>
 }
