@@ -6,9 +6,11 @@
 
 <h2>Add a new post</h2>
 
-@using (Html.BeginForm("Edit", "Post", FormMethod.Post, new { novalidate = "true", id = "EditForm" }))
+@using (Html.BeginForm("Edit", "Post", FormMethod.Post, new { novalidate = "true", id = "PostForm" }))
 {
     @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.PostId)
 
     <div class="mb-3">
         @Html.LabelFor(model => model.Title, new { htmlAttributes = new { @class = "form-label" } })
@@ -16,32 +18,28 @@
         @Html.ValidationMessageFor(model => model.Title, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
     </div>
 
-    <div class="mb-3">
+    @*<div class="mb-3">
         @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
         @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Contents") ? "" : "is-invalid")}", rows = "5" } })
         @Html.ValidationMessageFor(model => model.Contents, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
-    </div>
+    </div>*@
 
     @Html.HiddenFor(model => model.Contents)
+    <div class="my-3">
+        <div id="editor">
+            @Html.Raw(Model.Contents)
+        </div>
+    </div>
 
     //TODO: fare la select con tutte le categorie
     <div class="mb-3">
         @Html.LabelFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-label" } })
-        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "Name"), "Select category", new { @class = "form-select" })
+        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "Name"), "Select category", new { @class = $"form-select {(ViewData.ModelState.IsValidField("CategoryId") ? "" : "is-invalid")}" })
     </div>
 
     <button type="submit" class="btn btn-primary">Modifica</button>
 }
 
-
-@*@Html.Raw(str)*@
-
-@*<div class="my-3">
-    <div id="editor">
-        <h2>Demo Content</h2>
-        <p>Preset build with <code>snow</code> theme, and some common formats.</p>
-    </div>
-</div>
 
 @section styles {
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css" rel="stylesheet">
@@ -54,12 +52,8 @@
             theme: 'snow'
         });
 
-        const html = quill.getSemanticHTML();
-        console.log(html);
-
-        document.querySelector('#EditForm').addEventListener('submit', function () {
-            console.log('qui');
+        document.querySelector('#PostForm').addEventListener('submit', function () {
             document.querySelector('#Contents').value = quill.getSemanticHTML();
         });
     </script>
-}*@
+}

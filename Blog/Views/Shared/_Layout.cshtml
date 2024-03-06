@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse d-md-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Prova", "Prova", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Add Post", "Add", "Post", new { area = "" }, new { @class = "nav-link" })</li>
 
                     @if (User.Identity.IsAuthenticated)
                     {

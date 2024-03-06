@@ -10,8 +10,8 @@
 else
 {
     <h2>@Model.Title</h2>
-    <h3>In category: @Model.Category.Name</h3>
-    <h3>Written by: @Model.Author.Username</h3>
+    <div>In category: @Model.Category.Name</div>
+    <div>Written by: @Model.Author.Username</div>
 
-    <p>@Model.Contents</p>
+    <p>@Html.Raw(Model.Contents)</p>
 }

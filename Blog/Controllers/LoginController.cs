@@ -21,6 +21,7 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(Author author, bool keepLogged)
         {
             // cercare l'utente con author.Username e verificare che abbia author.Password nel DB
@@ -64,7 +65,6 @@ namespace Blog.Controllers
 
             // ridirezionarlo da qualche parte
             return RedirectToAction("Index", "Home");
-
         }
 
         public ActionResult Register()
@@ -74,8 +74,10 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(Author author)
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Exclude="AuthorId,Role")] Author author)
         {
+            // verificare se tutti i campi sono validi
             if(ModelState.IsValid)
             {
                 string connString = ConfigurationManager.ConnectionStrings["DbBlogConnection"].ToString();
@@ -83,15 +85,18 @@ namespace Blog.Controllers
                 conn.Open();
                 var command = new SqlCommand(@"
                     INSERT INTO Authors
-                    (Username, Email, Password)
-                    VALUES (@username, @email, @password)
+                    (Username, Email, Password, Role)
+                    VALUES (@username, @email, @password, @role)
                 ", conn);
                 command.Parameters.AddWithValue("@username", author.Username);
                 command.Parameters.AddWithValue("@email", author.Email);
                 command.Parameters.AddWithValue("@password", author.Password);
+                command.Parameters.AddWithValue("@role", author.Role);
                 var countRows = command.ExecuteNonQuery();
                 return RedirectToAction("Index");
             }
+            // se almeno un campo non è valido si restituisce la view che presenterà anche gli errori
+            // NO redirect in questo caso
             return View();
         }
     }

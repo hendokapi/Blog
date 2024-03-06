@@ -6,7 +6,7 @@
 
 <h2>Add a new post</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Add", "Post", FormMethod.Post, new { novalidate = "true", id = "PostForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -16,11 +16,41 @@
         @Html.ValidationMessageFor(model => model.Title, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
     </div>
 
-    <div class="mb-3">
+    @*<div class="mb-3">
         @Html.LabelFor(model => model.Contents, new { htmlAttributes = new { @class = "form-label" } })
         @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = $"form-control {(ViewData.ModelState.IsValidField("Contents") ? "" : "is-invalid")}", rows = "5" } })
         @Html.ValidationMessageFor(model => model.Contents, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
+    </div>*@
+
+    @Html.HiddenFor(model => model.Contents)
+    <div class="my-3">
+        <div id="editor"></div>
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-label" } })
+        @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.categories, "CategoryId", "Name"), "Seleziona una categoria", new { @class = $"form-select {(ViewData.ModelState.IsValidField("CategoryId") ? "" : "is-invalid")}" })
+        @Html.ValidationMessageFor(model => model.CategoryId, null, new { htmlAttributes = new { @class = "invalid-feedback" } })
     </div>
 
     <button type="submit" class="btn btn-primary">Crea</button>
+}
+
+
+
+@section styles {
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css" rel="stylesheet">
+}
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        document.querySelector('#PostForm').addEventListener('submit', function () {
+            document.querySelector('#Contents').value = quill.getSemanticHTML();
+        });
+    </script>
 }

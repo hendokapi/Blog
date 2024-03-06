@@ -17,11 +17,14 @@ namespace Blog.Models
 
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Campo obbligatorio")]
+        // [Unique] //TODO: creare la validazione custom
         public string Email { get; set; }
 
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Campo obbligatorio")]
-        [StringLength(15, MinimumLength = 8, ErrorMessage = "Min 8, max 15 caratteri")]
+        [StringLength(15, MinimumLength = 3, ErrorMessage = "Min 3, max 15 caratteri")]
         public string Password { get; set; }
+
+        public string Role { get; set; } = "editor";
     }
 }
